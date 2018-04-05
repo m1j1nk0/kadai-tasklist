@@ -1,0 +1,7 @@
+<h1>ID：<%= @task.id %>を編集する</h1>
+
+<%= form_for(@task) do |f| %>
+  <%= f.label :content, 'タスク' %>
+  <%= f.text_field :content %>
+  <%= f.submit '更新' %>
+<% end %>

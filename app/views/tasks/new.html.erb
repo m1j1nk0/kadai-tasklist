@@ -1,0 +1,7 @@
+<h1>あたらしいたすくのとうろく</h1>
+
+<%= form_for(@task) do |f| %>
+  <%= f.label :content, 'Task' %>
+  <%= f.text_field :content %>
+  <%= f.submit 'add' %>
+<% end %>
