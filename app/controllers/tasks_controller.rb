@@ -1,7 +1,13 @@
 class TasksController < ApplicationController
   
+  before_action :require_user_logged_in
+  before_action :correct_user, only: [:show, :edit, :update, :destroy]
+  
+  
   def index
-    @tasks = Task.all
+    if logged_in?
+      @tasks = current_user.tasks.order("created_at DESC")
+    end
   end
   
   def show
@@ -9,11 +15,11 @@ class TasksController < ApplicationController
   end
   
   def new
-    @task = Task.new
+    @task = current_user.tasks.build
   end
   
   def create
-    @task = Task.new(task_params)
+    @task = current_user.tasks.build(task_params)
     
     if @task.save
       flash[:success] = "タスクが正常に登録されました"
@@ -52,6 +58,14 @@ class TasksController < ApplicationController
   
   def task_params
     params.require(:task).permit(:content, :status)
+  end
+  
+  def correct_user
+    @task = current_user.tasks.find_by(id: params[:id])
+    unless @task
+      flash[:danger] = "不正なアクセスです"
+      redirect_to login_path
+    end
   end
   
 end
